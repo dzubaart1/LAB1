@@ -1,4 +1,4 @@
-import array.Set;
+import list.Set;
 
 public class Main {
     public static void main(String[] args)
@@ -13,6 +13,6 @@ public class Main {
         set2.Insert(4);
         set2.Print();
 
-        set1.Merge(set2).Print();
+        set1.Intersection(set2).Print();
     }
 }

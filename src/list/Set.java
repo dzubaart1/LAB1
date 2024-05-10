@@ -46,7 +46,9 @@ public class Set
         // Если такого эл-та нет, то давбялем в конец
         if(prevItem == null)
         {
-            _end = AppendItem(_end, x);
+            Item temp = new Item(x, _end.Next);
+            _end.Next = temp;
+            _end = temp;
             return;
         }
 
@@ -236,12 +238,16 @@ public class Set
     // Объединеяет непересекающиеся множетсва
     public Set Merge(Set b)
     {
-        if(b == null)
+        if(b == null || b == this)
         {
             return new Set(b);
         }
 
-        return Union(b);
+        Item endItem = UnionList(b);
+        Set newSet = new Set(Math.min(Start, b.Start), Math.max(End, b.End));
+        newSet._end = endItem;
+
+        return newSet;
     }
 
     // Обнуляет множество
@@ -367,7 +373,9 @@ public class Set
             }
             else
             {
-                resItem = AppendItem(resItem, thisListIndex.Value);
+                Item temp = new Item(thisListIndex.Value, resItem.Next);
+                resItem.Next = temp;
+                resItem = temp;
 
                 thisListIndex = thisListIndex.Next;
                 bListIndex = bListIndex.Next;
@@ -382,7 +390,9 @@ public class Set
         {
             if(thisListIndex.Value == bListIndex.Value)
             {
-                resItem = AppendItem(resItem, thisListIndex.Value);
+                Item temp = new Item(thisListIndex.Value, resItem.Next);
+                resItem.Next = temp;
+                resItem = temp;
             }
             return resItem;
         }
@@ -409,7 +419,9 @@ public class Set
 
             if(endItem.Value == remainsItem.Value)
             {
-                resItem = AppendItem(resItem, endItem.Value);
+                Item temp = new Item(endItem.Value, resItem.Next);
+                resItem.Next = temp;
+                resItem = temp;
                 break;
             }
 
@@ -418,7 +430,9 @@ public class Set
 
         if(remainsItem.Value == endItem.Value)
         {
-            resItem = AppendItem(resItem, endItem.Value);
+            Item temp = new Item(endItem.Value, resItem.Next);
+            resItem.Next = temp;
+            resItem = temp;
         }
 
         return resItem;
@@ -489,7 +503,9 @@ public class Set
                 bListIndex = bListIndex.Next;
             }
 
-            resItem = AppendItem(resItem, newItemValue);
+            Item temp = new Item(newItemValue, resItem.Next);
+            resItem.Next = temp;
+            resItem = temp;
         }
 
         Item remainsItem;
@@ -504,12 +520,16 @@ public class Set
             // Вставляем поочередно оба эл-та в зависимости от Value
             if(firstValue > resItem.Value)
             {
-                resItem = AppendItem(resItem, firstValue);
+                Item temp = new Item(firstValue, resItem.Next);
+                resItem.Next = temp;
+                resItem = temp;
             }
 
             if(secondValue > resItem.Value)
             {
-                resItem = AppendItem(resItem, secondValue);
+                Item temp = new Item(secondValue, resItem.Next);
+                resItem.Next = temp;
+                resItem = temp;
             }
 
             return resItem;
@@ -529,7 +549,9 @@ public class Set
         // Докидываем все эл-ты в список
         while (remainsItem != remainsEnd)
         {
-            resItem = AppendItem(resItem, remainsItem.Value);
+            Item temp = new Item(remainsItem.Value, resItem.Next);
+            resItem.Next = temp;
+            resItem = temp;
             remainsItem = remainsItem.Next;
         }
 
@@ -619,19 +641,6 @@ public class Set
         return newSet._end;
     }
 
-
-    // Добавление эл-та в конец и возвращение конца
-    private Item AppendItem(Item end, int value)
-    {
-        Item newItem = new Item(value, null);
-        Item temp = end.Next;
-
-        end.Next = newItem;
-        newItem.Next = temp;
-
-        return newItem;
-    }
-
     // Находится ли значение в интервале множества
     private boolean IsInRange(int value)
     {
@@ -672,7 +681,9 @@ public class Set
         Item fromItem = from._end.Next;
         while (fromItem != from._end)
         {
-            to._end = AppendItem(to._end, fromItem.Value);
+            Item temp = new Item(fromItem.Value, to._end.Next);
+            to._end.Next = temp;
+            to._end = temp;
             fromItem = fromItem.Next;
         }
     }

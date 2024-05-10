@@ -110,13 +110,19 @@ public class Set
     // Объединение непересекающихся множнств множеств
     public Set Merge(Set b)
     {
-        if(b == null)
+        if(b == null || b == this)
         {
             return new Set(b);
         }
 
-        // Вызываем Union(b)
-        return Union(b);
+        int newMin = Math.min(Start, b.Start);
+        int newMax = Math.max(End, b.End);
+
+        // Создаем множество и вычисляем содержимое с помощью UnionArrays
+        Set newSet = new Set(newMin, newMax);
+        UnionArrays(b, newSet._array);
+
+        return newSet;
     }
 
     // Находится ли число в множестве
